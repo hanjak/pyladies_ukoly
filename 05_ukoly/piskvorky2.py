@@ -1,7 +1,8 @@
-"""hrac = o
-pocitac = x"""
-
-
+"""
+hrac = o
+pocitac = x
+zacina hrac
+"""
 
 """definice tahu"""
 def tah (pole,cislo_policka,symbol):
@@ -11,10 +12,11 @@ def tah (pole,cislo_policka,symbol):
     return pole[:cislo_policka] + symbol + pole[cislo_policka + 1:]
 
 
-"""definice tahu pocitace s pouzitim strategie
+"""
+definice tahu pocitace s pouzitim strategie
 1) utok pri jasnem vitezstvi v prvnim tahu
 2) nutna obrana, pokud by k ni nedoslo hrac by jeho prvnim tahu mohl vyhrat
-3)utok pri moznem vitezstvi v druhem tahu
+3) utok pri moznem vitezstvi v druhem tahu
 4) nutna obrana, pokud by k ni nedoslo hrac by mohl vyhrat v druhem tahu
 """
 def tah_pocitace (pole):
@@ -84,18 +86,26 @@ def tah_pocitace (pole):
 
 
     """definice tahu hrace"""
+pocet_policek = 20
+hra = pocet_policek * "-"
 def tah_hrace (pole):
     "funkce ktera se zepta na tah hrace"
-    cislo_policka =int (input ("zadej cislo policka od 1 do 20: "))
-    while ((cislo_policka) < 1) or ((cislo_policka) > 20):
-        print ("spatne zadane cislo policka, musi byt od 1 do 20!")
-        cislo_policka = int (input ("zadej cislo policka od 1 do 20: "))
-    while ((pole[cislo_policka-1]) != "-"):
-        print ("policko je jiz obsazene!")
-        cislo_policka = int (input ("zadej cislo policka od 1 do 20: "))
+    cislo_policka = "chyba"
+    while cislo_policka == "chyba":
+        cislo_policka =input ("zadej cislo policka od 1 do 20: ")
+        try :
+            cislo_policka = int (cislo_policka)
+            if ((cislo_policka) < 1) or ((cislo_policka) > 20):
+                print ("spatne zadane cislo policka, musi byt od 1 do 20!")
+                cislo_policka = "chyba"
+            elif ((pole[cislo_policka-1]) != "-"):
+                print ("policko je jiz obsazene!")
+                cislo_policka = "chyba"
+        except ValueError:
+            print ("to neni cislo!")
+            cislo_policka = "chyba"
     hra = tah (pole, cislo_policka-1, "o")
     return hra
-
 
 
 """ definice vyhodnoceni"""
@@ -110,18 +120,16 @@ def vyhodnot (pole):
     elif "-" not in pole and "ooo" not in pole and "xxx" not in pole:
         return ("remiza")
 
-""" hra"""
+""" definice hry"""
 pocet_policek = 20
-hra = "--------------------"
-print (hra)
-hra = tah_hrace(hra)
-print (hra)
-hra = tah_pocitace (hra)
-print (hra)
-print (vyhodnot (hra))
-while vyhodnot (hra) == "hra jeste neskoncila":
-    hra = tah_hrace(hra)
-    print (hra)
-    hra = tah_pocitace (hra)
-    print (hra)
-    print (vyhodnot (hra))
+hra = pocet_policek * "-"
+def piskvorky1d (pole):
+    print (pole)
+    while vyhodnot (pole) == "hra jeste neskoncila":
+        pole = tah_hrace(pole)
+        print (pole)
+        pole = tah_pocitace (pole)
+        print (pole)
+        print (vyhodnot (pole))
+
+piskvorky1d (hra)
